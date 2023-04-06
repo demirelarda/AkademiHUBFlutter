@@ -61,6 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
+        elevation: 20, // gölge ekleme
+        type: BottomNavigationBarType.fixed, // item'lar fixed olsun
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: Colors.blueGrey),
