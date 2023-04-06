@@ -60,21 +60,26 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, color: Colors.blueGrey),
+            activeIcon: Icon(Icons.home, color: Colors.blue),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add),
+            icon: Icon(Icons.post_add, color: Colors.blueGrey),
+            activeIcon: Icon(Icons.post_add, color: Colors.blue),
             label: 'Post',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sort),
+            icon: Icon(Icons.sort, color: Colors.blueGrey),
+            activeIcon: Icon(Icons.sort, color: Colors.blue),
             label: 'Rank',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle, color:Colors.blueGrey),
+            activeIcon: Icon(Icons.account_circle, color: Colors.blue),
             label: 'Account',
           ),
         ],
