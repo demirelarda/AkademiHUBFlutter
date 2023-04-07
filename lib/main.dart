@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bottom Navigation Bar Demo',
+      title: 'AkademiHUB',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/post': (BuildContext context) => PostPage(),
         '/rank': (BuildContext context) => RankPage(),
         '/account': (BuildContext context) => AccountPage(),
+        '/login': (context) => LoginPage(title: 'Login')
       },
     );
   }
