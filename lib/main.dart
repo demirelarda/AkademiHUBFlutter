@@ -6,6 +6,7 @@ import 'home_page.dart';
 import 'post_page.dart';
 import 'rank_page.dart';
 import 'account_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,12 +28,32 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: _Wrapper(),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/post': (BuildContext context) => PostPage(),
         '/rank': (BuildContext context) => RankPage(),
         '/account': (BuildContext context) => AccountPage(),
+      },
+    );
+  }
+}
+
+class _Wrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.data?.uid == null) {
+            return LoginPage();
+          } else {
+            return MyHomePage(title: 'Bottom Navigation Bar Demo'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
+          }
+        } else {
+          return CircularProgressIndicator();
+        }
       },
     );
   }
@@ -74,8 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        elevation: 20, // gölge ekleme
-        type: BottomNavigationBarType.fixed, // item'lar fixed olsun
+        elevation: 20,
+        // gölge ekleme
+        type: BottomNavigationBarType.fixed,
+        // item'lar fixed olsun
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: Colors.blueGrey),
@@ -93,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Rank',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle, color:Colors.blueGrey),
+            icon: Icon(Icons.account_circle, color: Colors.blueGrey),
             activeIcon: Icon(Icons.account_circle, color: Colors.blue),
             label: 'Account',
           ),
@@ -105,3 +128,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

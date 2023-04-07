@@ -74,9 +74,10 @@ class _LoginPageState extends State<LoginPage> {
         if (result != null) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
         } else {
-          Navigator.pushNamed(context, '/home');
+
         }
       });
     }
   }
+
 }
