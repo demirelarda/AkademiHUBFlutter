@@ -88,7 +88,15 @@ class FirestoreService {
     await postRef.update({'commentCount': commentCount});
   }
 
+  Future<void> updateCommentIsSolved(String commentId, bool isSolved) async {
+    try {
+      await _commentsCollection.doc(commentId).update({'isSolved': isSolved});
+    } catch (e) {
+      print('Error updating comment isSolved: $e');
+      rethrow;
+    }
+  }
+
+
 
 }
-
-

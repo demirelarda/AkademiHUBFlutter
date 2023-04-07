@@ -35,6 +35,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
         sentToPostId: widget.post.id,
         sentByUserId: currentUserId!,
         sentByUserName:currentUserName!,
+        isSolved: false
       );
 
       try {
@@ -150,10 +151,16 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   Widget _buildCommentCard(PostCommentModel comment) {
     bool isSelected = _selectedCommentId == comment.id;
     return Card(
-      color: isSelected ? Colors.lightGreen[100] : null,
+      color: comment.isSolved ? Colors.lightGreen[100] : null,
       child: InkWell(
         onTap: widget.post.sentByUserId == currentUserId
-            ? () => _toggleSelectedComment(comment.id)
+            ? () async {
+          await _firestoreService.updateCommentIsSolved(
+              comment.id, !comment.isSolved);
+          setState(() {
+            comment.isSolved = !comment.isSolved;
+          });
+        }
             : null,
         child: Padding(
           padding: const EdgeInsets.all(8.0),

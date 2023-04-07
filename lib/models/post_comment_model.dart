@@ -7,6 +7,7 @@ class PostCommentModel {
   String sentByUserId;
   String sentByUserName;
   String content;
+  bool isSolved;
 
   PostCommentModel({
     required this.id,
@@ -15,6 +16,7 @@ class PostCommentModel {
     required this.sentByUserId,
     required this.sentByUserName,
     required this.content,
+    required this.isSolved,
   });
 
   factory PostCommentModel.fromFirestore(DocumentSnapshot doc) {
@@ -27,6 +29,7 @@ class PostCommentModel {
       sentByUserId: data['sentByUserId'] ?? '',
       sentByUserName: data['sentByUserName'] ?? '',
       content: data['content'] ?? '',
+      isSolved: data['isSolved'] ?? false,
     );
   }
 
@@ -37,6 +40,7 @@ class PostCommentModel {
       'sentByUserId': sentByUserId,
       'sentByUserName': sentByUserName,
       'content':content,
+      'isSolved': isSolved,
     };
   }
 }
