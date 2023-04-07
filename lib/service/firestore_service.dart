@@ -98,9 +98,16 @@ class FirestoreService {
   }
 
   Future<void> updateUserPoints(String userId, int points) async {
-    final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
-    await userRef.update({'userPoint': FieldValue.increment(points)});
+    try {
+      final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+      await userRef.update({'userPoint': FieldValue.increment(points)});
+    } catch (e) {
+      print('Error updating user points: $e');
+      rethrow;
+    }
   }
+
+
 
 
 

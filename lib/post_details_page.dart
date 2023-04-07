@@ -29,13 +29,13 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       print(currentUserId);
       print(currentUserName);
       PostCommentModel newComment = PostCommentModel(
-        id: '',
-        content: _commentController.text,
-        likes: 0,
-        sentToPostId: widget.post.id,
-        sentByUserId: currentUserId!,
-        sentByUserName:currentUserName!,
-        isSolved: false
+          id: '',
+          content: _commentController.text,
+          likes: 0,
+          sentToPostId: widget.post.id,
+          sentByUserId: currentUserId!,
+          sentByUserName:currentUserName!,
+          isSolved: false
       );
 
       try {
@@ -51,14 +51,15 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   }
 
 
-  void _toggleSelectedComment(String commentId) {
-    setState(() {
-      if (_selectedCommentId == commentId) {
-        _selectedCommentId = null;
-      } else {
-        _selectedCommentId = commentId;
-      }
-    });
+  void _toggleSelectedComment(PostCommentModel comment) async {
+    if (widget.post.sentByUserId == currentUserId) {
+      await _firestoreService.updateCommentIsSolved(comment.id, !comment.isSolved);
+      await _firestoreService.updateUserPoints(
+          comment.sentByUserId, comment.isSolved ? -20 : 20);
+      setState(() {
+        comment.isSolved = !comment.isSolved;
+      });
+    }
   }
 
   @override
@@ -153,15 +154,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     return Card(
       color: comment.isSolved ? Colors.lightGreen[100] : null,
       child: InkWell(
-        onTap: widget.post.sentByUserId == currentUserId
-            ? () async {
-          await _firestoreService.updateCommentIsSolved(
-              comment.id, !comment.isSolved);
-          setState(() {
-            comment.isSolved = !comment.isSolved;
-          });
-        }
-            : null,
+        onTap: () => _toggleSelectedComment(comment),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -194,4 +187,5 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       ),
     );
   }
+
 }
