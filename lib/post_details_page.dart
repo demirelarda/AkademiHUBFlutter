@@ -39,6 +39,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
 
       try {
         await _firestoreService.addComment(newComment);
+        widget.post.commentCount++;
+        await _firestoreService.updateCommentCount(widget.post);
         _commentController.clear();
         setState(() {});
       } catch (e) {
@@ -46,6 +48,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       }
     }
   }
+
 
   void _toggleSelectedComment(String commentId) {
     setState(() {

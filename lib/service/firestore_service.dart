@@ -80,6 +80,14 @@ class FirestoreService {
     }
   }
 
+  Future<void> updateCommentCount(Post post) async {
+    final postRef = _postsCollection.doc(post.id);
+    final commentsQuery = _commentsCollection.where('sentToPostId', isEqualTo: post.id);
+    final comments = await commentsQuery.get();
+    final commentCount = comments.docs.length;
+    await postRef.update({'commentCount': commentCount});
+  }
+
 
 }
 
