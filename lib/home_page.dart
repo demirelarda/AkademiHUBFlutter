@@ -15,9 +15,13 @@ class _HomePageState extends State<HomePage> {
   final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
   void _toggleLike(Post post) async {
+    bool wasLiked = _isPostLiked(post);
     await _firestoreService.updatePostLikeStatus(post, currentUserId!);
+    int points = wasLiked ? -10 : 10;
+    await _firestoreService.updateUserPoints(post.sentByUserId, points);
     setState(() {});
   }
+
 
   bool _isPostLiked(Post post) {
     return post.likedByUsers.contains(currentUserId);

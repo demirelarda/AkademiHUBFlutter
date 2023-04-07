@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:akademi_hub_flutter/service/authentication_service.dart';
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +17,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   String _selectedCourse = 'Unity';
+  int? _randomNumber1;
+  int? _randomNumber2;
+  int? _randomNumber3;
 
   final AuthenticationService _authService = AuthenticationService();
   final FirestoreService _firestoreService = FirestoreService();
@@ -27,6 +32,10 @@ class _SignUpPageState extends State<SignUpPage> {
       UserCredential? userCredential = await _authService.signUpWithEmail(
           _emailController.text, _passwordController.text,_firstNameController.text,_lastNameController.text);
 
+      _randomNumber1 = Random().nextInt(100);
+      _randomNumber2 = Random().nextInt(100);
+      _randomNumber3 = Random().nextInt(100);
+
       if (userCredential != null) {
         UserModel newUser = UserModel(
           userId: userCredential.user!.uid,
@@ -34,6 +43,9 @@ class _SignUpPageState extends State<SignUpPage> {
           lastName: _lastNameController.text,
           userPoint: 0,
           selectedCourse: _selectedCourse,
+          mainCourseCompletion: _randomNumber1!,
+          entCompletion: _randomNumber2!,
+          englishCompletion: _randomNumber3!,
         );
 
         try {
