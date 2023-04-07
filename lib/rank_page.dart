@@ -1,3 +1,4 @@
+import 'package:akademi_hub_flutter/user_score.dart';
 import 'package:flutter/material.dart';
 
 class RankPage extends StatelessWidget {
@@ -27,9 +28,4 @@ class RankPage extends StatelessWidget {
   }
 }
 
-class UserScore {
-  final String username;
-  final int score;
 
-  UserScore({required this.username, required this.score});
-}

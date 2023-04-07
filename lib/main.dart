@@ -1,10 +1,23 @@
+import 'package:akademi_hub_flutter/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'home_page.dart';
 import 'post_page.dart';
 import 'rank_page.dart';
 import 'account_page.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // This is the last thing you need to add.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Bottom Navigation Bar Demo'),
+      home: LoginPage(),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/post': (BuildContext context) => PostPage(),
