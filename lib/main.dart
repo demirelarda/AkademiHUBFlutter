@@ -47,7 +47,7 @@ class _Wrapper extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data?.uid == null) {
-            return LoginPage();
+            return LoginPage(title: '',);
           } else {
             return MyHomePage(title: 'Bottom Navigation Bar Demo'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
           }
