@@ -10,6 +10,7 @@ class Post {
   final int postScore;
   final String sentByUserId;
   final String sentByUserName;
+  final int commentCount;
 
   Post({
     required this.id,
@@ -21,20 +22,22 @@ class Post {
     required this.postScore,
     required this.sentByUserId,
     required this.sentByUserName,
+    required this.commentCount,
   });
 
   factory Post.fromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     return Post(
       id: snapshot.id,
-      title: data['title'],
-      content: data['content'],
-      category: data['category'],
-      createdAt: data['createdAt'],
-      likes: data['likes'],
-      postScore: data['postScore'],
-      sentByUserId: data['sentByUserId'],
-      sentByUserName: data['sentByUserName'],
+      title: data['title'] ?? '',
+      content: data['content'] ?? '',
+      category: data['category'] ?? '',
+      createdAt: data['createdAt'] ?? Timestamp.now(),
+      likes: data['likes'] ?? 0,
+      postScore: data['postScore'] ?? 0,
+      sentByUserId: data['sentByUserId'] ?? '',
+      sentByUserName: data['sentByUserName'] ?? '',
+      commentCount: data['commentCount'] ?? 0,
     );
   }
 
@@ -44,10 +47,11 @@ class Post {
       'content': content,
       'category': category,
       'createdAt': createdAt,
-      'likes':likes,
-      'postScore':postScore,
-      'sentByUserId':sentByUserId,
-      'sentByUserName':sentByUserName,
+      'likes': likes,
+      'postScore': postScore,
+      'sentByUserId': sentByUserId,
+      'sentByUserName': sentByUserName,
+      'commentCount': commentCount,
     };
   }
 }

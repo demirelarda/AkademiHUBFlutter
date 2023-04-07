@@ -1,5 +1,6 @@
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'models/post_model.dart';
@@ -19,6 +20,7 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -94,15 +96,39 @@ class _PostPageState extends State<PostPage> {
                       createdAt: Timestamp.now(),
                       likes: 0,
                       postScore: 0,
-                      sentByUserId: 'someUserId',
-                      sentByUserName: 'someUserName',
+                      sentByUserId: user!.uid,
+                      sentByUserName: user.displayName ?? 'User',
+                      commentCount: 0
+                    );
+
+                    // gönderi eklenirken progress bar göster
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     );
 
                     try {
                       await _firestoreService.addPost(newPost);
-                      SnackBar(content: Text('Gönderi Başarıyla Yollandı!'));
+
+                      // progress barı gizle
+                      Navigator.pop(context);
+
+                      // başarılı snackbar'ı göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Gönderi başarıyla eklendi')),
+                      );
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                     } catch (e) {
+                      // progress barı gizle
+                      Navigator.pop(context);
+
                       print(e.toString());
+                      // hata snackbar'ı göster
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Gönderi eklenemedi')),
                       );
