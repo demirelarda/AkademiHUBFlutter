@@ -23,4 +23,21 @@ class AuthenticationService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  Future<UserCredential?> signUpWithEmail(String email, String password, String firstName, String lastName) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await userCredential.user!.updateDisplayName('$firstName $lastName');
+
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      print('Sign up error: $e');
+      return null;
+    }
+  }
+
 }

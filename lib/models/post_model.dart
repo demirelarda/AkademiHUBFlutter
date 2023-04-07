@@ -6,11 +6,13 @@ class Post {
   final String content;
   final String category;
   final Timestamp createdAt;
-  final int likes;
+  int likes;
   final int postScore;
   final String sentByUserId;
   final String sentByUserName;
-  final int commentCount;
+  int commentCount;
+  final bool isSolved;
+  List<String> likedByUsers;
 
   Post({
     required this.id,
@@ -23,6 +25,8 @@ class Post {
     required this.sentByUserId,
     required this.sentByUserName,
     required this.commentCount,
+    required this.isSolved,
+    required this.likedByUsers,
   });
 
   factory Post.fromSnapshot(DocumentSnapshot snapshot) {
@@ -38,6 +42,8 @@ class Post {
       sentByUserId: data['sentByUserId'] ?? '',
       sentByUserName: data['sentByUserName'] ?? '',
       commentCount: data['commentCount'] ?? 0,
+      isSolved: data['isSolved'] ?? false,
+      likedByUsers: List<String>.from(data['likedByUsers'] ?? []),
     );
   }
 
@@ -52,6 +58,18 @@ class Post {
       'sentByUserId': sentByUserId,
       'sentByUserName': sentByUserName,
       'commentCount': commentCount,
+      'isSolved': isSolved,
+      'likedByUsers': likedByUsers,
     };
+  }
+
+  void toggleLike(String userId) {
+    if (likedByUsers.contains(userId)) {
+      likedByUsers.remove(userId);
+      likes--;
+    } else {
+      likedByUsers.add(userId);
+      likes++;
+    }
   }
 }

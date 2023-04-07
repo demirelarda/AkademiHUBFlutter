@@ -98,7 +98,9 @@ class _PostPageState extends State<PostPage> {
                       postScore: 0,
                       sentByUserId: user!.uid,
                       sentByUserName: user.displayName ?? 'User',
-                      commentCount: 0
+                      commentCount: 0,
+                      isSolved: false,
+                      likedByUsers: <String>[]
                     );
 
                     // gönderi eklenirken progress bar göster

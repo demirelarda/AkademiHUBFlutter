@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:akademi_hub_flutter/service/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'signup_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -30,7 +32,6 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final AuthenticationService _authService = AuthenticationService();
@@ -53,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             child: FloatingActionButton(
                 backgroundColor: Color.fromARGB(224, 58, 11, 247),
                 child: Text(""),
-                onPressed: () {
-
-                }),
+                onPressed: () {}),
           ),
         ),
         Column(
@@ -169,14 +168,14 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: ElevatedButton.styleFrom(
                             primary: Color.fromARGB(224, 58, 11, 247),
-                            padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 60, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: InkWell(
@@ -189,14 +188,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          signIn();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()),
+                          );
                         },
                         child: Text(
                           "Üye Ol",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                     ],
                   ),
                 ))
@@ -212,7 +214,6 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.signInWithEmailAndPassword(
             _emailController.text, _passwordController.text);
-
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message!)));

@@ -1,12 +1,14 @@
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 
 import 'models/post_comment_model.dart';
 import 'models/post_model.dart';
 
 class PostDetailsPage extends StatefulWidget {
   final Post post;
+
+
 
   PostDetailsPage({required this.post});
 
@@ -17,33 +19,50 @@ class PostDetailsPage extends StatefulWidget {
 class _PostDetailsPageState extends State<PostDetailsPage> {
   TextEditingController _commentController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
+  final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  final String? currentUserName = FirebaseAuth.instance.currentUser?.displayName;
+  String? _selectedCommentId;
+
 
   void _submitComment() async {
     if (_commentController.text.isNotEmpty) {
-      print(_commentController.text);
+      print(currentUserId);
+      print(currentUserName);
       PostCommentModel newComment = PostCommentModel(
         id: '',
         content: _commentController.text,
         likes: 0,
         sentToPostId: widget.post.id,
-        sentByUserId: 'currentUser',
-        sentByUserName: 'currentUserName',
+        sentByUserId: currentUserId!,
+        sentByUserName:currentUserName!,
       );
 
       try {
         await _firestoreService.addComment(newComment);
         _commentController.clear();
+        setState(() {});
       } catch (e) {
-        print('Yorum gönderme hatası: $e');
+        print('Error submitting comment: $e');
       }
     }
   }
 
+  void _toggleSelectedComment(String commentId) {
+    setState(() {
+      if (_selectedCommentId == commentId) {
+        _selectedCommentId = null;
+      } else {
+        _selectedCommentId = commentId;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("username = "+currentUserName!);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gönderi Detayları'),
+        title: Text('Post Details'),
       ),
       body: Column(
         children: [
@@ -69,14 +88,16 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
               ],
             ),
           ),
+          Divider(height: 1, thickness: 1, color: Colors.grey),
           Expanded(
             child: FutureBuilder<List<PostCommentModel>>(
               future: _firestoreService.getCommentsForPost(widget.post.id),
-              builder: (BuildContext context, AsyncSnapshot<List<PostCommentModel>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<PostCommentModel>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Bir hata oluştu'));
+                  return Center(child: Text('An error occurred'));
                 } else {
                   List<PostCommentModel> comments = snapshot.data!;
                   return ListView.builder(
@@ -108,7 +129,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
               child: TextField(
                 controller: _commentController,
                 decoration: InputDecoration(
-                  hintText: 'Yorum ekle...',
+                  hintText: 'Add a comment...',
                   border: InputBorder.none,
                 ),
               ),
@@ -124,31 +145,43 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   }
 
   Widget _buildCommentCard(PostCommentModel comment) {
-    print(comment.content);
+    bool isSelected = _selectedCommentId == comment.id;
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              comment.sentByUserName,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(comment.content),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(Icons.favorite, color: Colors.grey),
-                SizedBox(width: 5),
-                Text('${comment.likes}'),
-              ],
-            ),
-          ],
+      color: isSelected ? Colors.lightGreen[100] : null,
+      child: InkWell(
+        onTap: widget.post.sentByUserId == currentUserId
+            ? () => _toggleSelectedComment(comment.id)
+            : null,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                comment.sentByUserName,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(comment.content),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  isSelected && widget.post.sentByUserId == currentUserId
+                      ? Icon(Icons.check, color: Colors.green)
+                      : SizedBox(),
+                  Row(
+                    children: [
+                      Icon(Icons.favorite, color: Colors.grey),
+                      SizedBox(width: 5),
+                      Text('${comment.likes}'),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
