@@ -1,3 +1,4 @@
+import 'package:akademi_hub_flutter/post_details_page.dart';
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -30,42 +31,52 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            posts[index].sentByUserName,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostDetailsPage(post: posts[index]),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              posts[index].sentByUserName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            posts[index].title,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(Icons.favorite, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Text('${posts[index].likes}'),
-                              SizedBox(width: 15),
-                              Icon(Icons.comment, color: Colors.grey),
-                              SizedBox(width: 5),
-                              Text('${posts[index].commentCount}'),
-                            ],
-                          ),
-                        ],
+                            SizedBox(height: 10),
+                            Text(
+                              posts[index].title,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(Icons.favorite, color: Colors.grey),
+                                SizedBox(width: 5),
+                                Text('${posts[index].likes}'),
+                                SizedBox(width: 15),
+                                Icon(Icons.comment, color: Colors.grey),
+                                SizedBox(width: 5),
+                                Text('${posts[index].commentCount}'),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

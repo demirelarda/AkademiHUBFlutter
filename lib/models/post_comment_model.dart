@@ -6,6 +6,7 @@ class PostCommentModel {
   String sentToPostId;
   String sentByUserId;
   String sentByUserName;
+  String content;
 
   PostCommentModel({
     required this.id,
@@ -13,6 +14,7 @@ class PostCommentModel {
     required this.sentToPostId,
     required this.sentByUserId,
     required this.sentByUserName,
+    required this.content,
   });
 
   factory PostCommentModel.fromFirestore(DocumentSnapshot doc) {
@@ -24,6 +26,7 @@ class PostCommentModel {
       sentToPostId: data['sentToPostId'] ?? '',
       sentByUserId: data['sentByUserId'] ?? '',
       sentByUserName: data['sentByUserName'] ?? '',
+      content: data['content'] ?? '',
     );
   }
 
@@ -33,6 +36,7 @@ class PostCommentModel {
       'sentToPostId': sentToPostId,
       'sentByUserId': sentByUserId,
       'sentByUserName': sentByUserName,
+      'content':content,
     };
   }
 }
