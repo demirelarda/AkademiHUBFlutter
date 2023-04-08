@@ -21,17 +21,17 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> data) {
     return UserModel(
-      userId: data['userId'],
-      firstName: data['firstName'],
-      lastName: data['lastName'],
-      userPoint: data['userPoint'],
-      selectedCourse: data['selectedCourse'],
-      mainCourseCompletion: data['mainCourseCompletion'],
-      entCompletion: data['entCompletion'],
-      englishCompletion: data['englishCompletion'],
-
+      userId: data['userId'] ?? '',
+      firstName: data['firstName'] ?? '',
+      lastName: data['lastName'] ?? '',
+      userPoint: data['userPoint'] ?? 0,
+      selectedCourse: data['selectedCourse'] ?? '',
+      mainCourseCompletion: data['mainCourseCompletion'] ?? 0,
+      entCompletion: data['entCompletion'] ?? 0,
+      englishCompletion: data['englishCompletion'] ?? 0,
     );
   }
+
 
   Map<String, dynamic> toMap() {
     return {
