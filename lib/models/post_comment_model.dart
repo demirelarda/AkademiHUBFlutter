@@ -8,6 +8,7 @@ class PostCommentModel {
   String sentByUserName;
   String content;
   bool isSolved;
+  List<String> likedByUsers;
 
   PostCommentModel({
     required this.id,
@@ -17,6 +18,7 @@ class PostCommentModel {
     required this.sentByUserName,
     required this.content,
     required this.isSolved,
+    required this.likedByUsers
   });
 
   factory PostCommentModel.fromFirestore(DocumentSnapshot doc) {
@@ -30,6 +32,7 @@ class PostCommentModel {
       sentByUserName: data['sentByUserName'] ?? '',
       content: data['content'] ?? '',
       isSolved: data['isSolved'] ?? false,
+      likedByUsers: List<String>.from(data['likedByUsers'] ?? []),
     );
   }
 
@@ -41,6 +44,18 @@ class PostCommentModel {
       'sentByUserName': sentByUserName,
       'content':content,
       'isSolved': isSolved,
+      'likedByUsers': likedByUsers,
     };
   }
+
+  void toggleLike(String userId) {
+    if (likedByUsers.contains(userId)) {
+      likedByUsers.remove(userId);
+      likes--;
+    } else {
+      likedByUsers.add(userId);
+      likes++;
+    }
+  }
+
 }

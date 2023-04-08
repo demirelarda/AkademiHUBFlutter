@@ -120,6 +120,17 @@ class FirestoreService {
     }
   }
 
+  Future<void> updateCommentLikes(PostCommentModel comment) async {
+    try {
+      await _commentsCollection
+          .doc(comment.id)
+          .update({'likes': comment.likes, 'likedByUsers': comment.likedByUsers});
+    } catch (e) {
+      print('Error updating comment likes: $e');
+      throw e;
+    }
+  }
+
 
 
 

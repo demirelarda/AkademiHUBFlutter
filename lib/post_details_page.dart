@@ -33,7 +33,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           sentToPostId: widget.post.id,
           sentByUserId: currentUserId!,
           sentByUserName: currentUserName!,
-          isSolved: false);
+          isSolved: false,
+          likedByUsers: <String>[]);
 
       try {
         await _firestoreService.addComment(newComment);
@@ -45,6 +46,12 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
         print('Error submitting comment: $e');
       }
     }
+  }
+
+  void _toggleLikeComment(PostCommentModel comment) async {
+    comment.toggleLike(currentUserId!);
+    await _firestoreService.updateCommentLikes(comment);
+    setState(() {});
   }
 
   void _toggleSelectedComment(PostCommentModel comment) async {
@@ -101,10 +108,12 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                     padding: EdgeInsets.only(bottom: 60), // Padding ekledik
                     child: SingleChildScrollView(
                       child: FutureBuilder<List<PostCommentModel>>(
-                        future: _firestoreService.getCommentsForPost(widget.post.id),
+                        future: _firestoreService
+                            .getCommentsForPost(widget.post.id),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<PostCommentModel>> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
                             return Center(child: Text('An error occurred'));
@@ -117,7 +126,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                               },
                               shrinkWrap: true, // ShrinkWrap true olmalı
                               physics:
-                              NeverScrollableScrollPhysics(), // ListView'in kendi scroll özelliğini kapatıyoruz
+                                  NeverScrollableScrollPhysics(), // ListView'in kendi scroll özelliğini kapatıyoruz
                             );
                           }
                         },
@@ -125,7 +134,6 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                     ),
                   ),
                 ),
-
               ],
             ),
             Align(
@@ -189,12 +197,22 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                   isSelected && widget.post.sentByUserId == currentUserId
                       ? Icon(Icons.check, color: Colors.green)
                       : SizedBox(),
-                  Row(
-                    children: [
-                      Icon(Icons.favorite, color: Colors.grey),
-                      SizedBox(width: 5),
-                      Text('${comment.likes}'),
-                    ],
+                  GestureDetector(
+                    onTap: () => _toggleLikeComment(comment),
+                    child: Row(
+                      children: [
+                        Icon(
+                          comment.likedByUsers.contains(currentUserId)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: comment.likedByUsers.contains(currentUserId)
+                              ? Colors.red
+                              : Colors.grey,
+                        ),
+                        SizedBox(width: 5),
+                        Text('${comment.likes}'),
+                      ],
+                    ),
                   ),
                 ],
               ),
