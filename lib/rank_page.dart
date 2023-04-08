@@ -112,6 +112,22 @@ class _RankPageState extends State<RankPage> {
                     itemCount: users.length,
                     itemBuilder: (BuildContext context, int index) {
                       UserModel user = users[index];
+                      Color? textColor;
+
+                      switch (index) {
+                        case 0:
+                          textColor = Colors.yellow[700]; // Altın madalya rengi
+                          break;
+                        case 1:
+                          textColor = Colors.grey; // Gümüş madalya rengi
+                          break;
+                        case 2:
+                          textColor = Color(0xFFCD7F32); // Bronz madalya rengi
+                          break;
+                        default:
+                          textColor = Colors.black;
+                      }
+
                       return ListTile(
                         leading: Icon(
                           Icons.brightness_1,
@@ -122,7 +138,8 @@ class _RankPageState extends State<RankPage> {
                             ? ImageIcon(AssetImage("images/flutter-icon.png"))
                             : ImageIcon(AssetImage("images/unity-icon.png")),
                         title: Text(
-                            "${user.userPoint} ${user.firstName} ${user.lastName}"),
+                            "${user.userPoint} ${user.firstName} ${user.lastName}",
+                            style: TextStyle(color: textColor)),
                       );
                     }),
               ),
