@@ -1,4 +1,5 @@
 import 'package:akademi_hub_flutter/login_page.dart';
+import 'package:akademi_hub_flutter/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -26,33 +27,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'AkademiHUB',
-      home: _Wrapper(),
+      home: Wrapper(),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/post': (BuildContext context) => PostPage(),
         '/rank': (BuildContext context) => RankPage(),
         '/account': (BuildContext context) => AccountPage(),
-        '/login': (context) => LoginPage(title: 'Login')
-      },
-    );
-  }
-}
-
-class _Wrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.data?.uid == null) {
-            return LoginPage(title: '',);
-          } else {
-            return MyHomePage(title: 'Akademi HUB', initialIndex: 0); // Kullanıcı giriş yaptıysa direkt olarak Login'i geç
-          }
-        } else {
-          return CircularProgressIndicator();
-        }
+        '/login': (context) => LoginPage()
       },
     );
   }
@@ -61,10 +42,9 @@ class _Wrapper extends StatelessWidget {
 
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, this.initialIndex = 0}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  final int initialIndex;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -72,12 +52,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.initialIndex;
-  }
 
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
