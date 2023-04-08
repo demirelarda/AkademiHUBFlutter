@@ -78,9 +78,6 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.only(left:16.0,right: 16,top: 40),
             child: Column(
               children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("İsim:")),
                 TextField(
                   controller: _firstNameController,
                   decoration: InputDecoration(
@@ -89,9 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(height: 16),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Soyisim:")),
+
                 TextField(
                   controller: _lastNameController,
                   decoration: InputDecoration(
@@ -100,9 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(height: 16),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("E-mail:")),
+
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -111,9 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(height: 16),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Şifre:")),
+
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
@@ -122,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 75),
                 Text("Seçilen Alan:",style: TextStyle(
                     fontWeight: FontWeight.bold
                 ),),
@@ -140,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         });
                       },
                     ),
-                    SizedBox(width: 16),
+                    SizedBox(width: 50),
                     ImageIcon(AssetImage("images/flutter-icon.png")),
                     Radio<String>(
                       value: 'Flutter',
@@ -153,13 +144,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 34, 38, 62),
+                SizedBox(height: 50),
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: ElevatedButton(
+
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      backgroundColor: Color.fromARGB(255, 34, 38, 62),
+                    ),
+                    onPressed: _signUp,
+                    child: Text('Üye Ol'),
                   ),
-                  onPressed: _signUp,
-                  child: Text('Üye Ol'),
                 ),
               ],
             ),
