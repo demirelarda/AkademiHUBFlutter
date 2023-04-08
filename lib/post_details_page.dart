@@ -8,8 +8,6 @@ import 'models/post_model.dart';
 class PostDetailsPage extends StatefulWidget {
   final Post post;
 
-
-
   PostDetailsPage({required this.post});
 
   @override
@@ -20,9 +18,9 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   TextEditingController _commentController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
   final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-  final String? currentUserName = FirebaseAuth.instance.currentUser?.displayName;
+  final String? currentUserName =
+      FirebaseAuth.instance.currentUser?.displayName;
   String? _selectedCommentId;
-
 
   void _submitComment() async {
     if (_commentController.text.isNotEmpty) {
@@ -34,9 +32,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           likes: 0,
           sentToPostId: widget.post.id,
           sentByUserId: currentUserId!,
-          sentByUserName:currentUserName!,
-          isSolved: false
-      );
+          sentByUserName: currentUserName!,
+          isSolved: false);
 
       try {
         await _firestoreService.addComment(newComment);
@@ -50,10 +47,10 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     }
   }
 
-
   void _toggleSelectedComment(PostCommentModel comment) async {
     if (widget.post.sentByUserId == currentUserId) {
-      await _firestoreService.updateCommentIsSolved(comment.id, !comment.isSolved);
+      await _firestoreService.updateCommentIsSolved(
+          comment.id, !comment.isSolved);
       await _firestoreService.updateUserPoints(
           comment.sentByUserId, comment.isSolved ? -20 : 20);
       setState(() {
@@ -64,84 +61,104 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("username = "+currentUserName!);
+    print("username = " + currentUserName!);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Post Details'),
+        backgroundColor: Color.fromARGB(255, 34, 38, 62),
+        title: Text('Gönderi Detayları'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
               children: [
-                Text(
-                  widget.post.title,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 16),
-                Text(widget.post.content),
-                SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    'by ${widget.post.sentByUserName}',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.post.title,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 16),
+                      Text(widget.post.content),
+                      SizedBox(height: 16),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          'by ${widget.post.sentByUserName}',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Divider(height: 1, thickness: 1, color: Colors.grey),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 60), // Padding ekledik
+                    child: SingleChildScrollView(
+                      child: FutureBuilder<List<PostCommentModel>>(
+                        future: _firestoreService.getCommentsForPost(widget.post.id),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<PostCommentModel>> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('An error occurred'));
+                          } else {
+                            List<PostCommentModel> comments = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: comments.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return _buildCommentCard(comments[index]);
+                              },
+                              shrinkWrap: true, // ShrinkWrap true olmalı
+                              physics:
+                              NeverScrollableScrollPhysics(), // ListView'in kendi scroll özelliğini kapatıyoruz
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
-          ),
-          Divider(height: 1, thickness: 1, color: Colors.grey),
-          Expanded(
-            child: FutureBuilder<List<PostCommentModel>>(
-              future: _firestoreService.getCommentsForPost(widget.post.id),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<PostCommentModel>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('An error occurred'));
-                } else {
-                  List<PostCommentModel> comments = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: comments.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _buildCommentCard(comments[index]);
-                    },
-                  );
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4.0,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _commentController,
-                decoration: InputDecoration(
-                  hintText: 'Add a comment...',
-                  border: InputBorder.none,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4.0,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _commentController,
+                        decoration: InputDecoration(
+                          hintText: 'Add a comment...',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: _submitComment,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: _submitComment,
             ),
           ],
         ),
@@ -187,5 +204,4 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       ),
     );
   }
-
 }

@@ -4,6 +4,9 @@ import '../models/post_model.dart';
 import '../models/user_model.dart';
 
 class FirestoreService {
+
+
+
   final CollectionReference _postsCollection =
   FirebaseFirestore.instance.collection('posts');
 
@@ -106,6 +109,17 @@ class FirestoreService {
       rethrow;
     }
   }
+
+  Future<UserModel> getUser(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      return UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+    } catch (e) {
+      print(e);
+      throw Exception("Kullanıcı bilgisi alınamadı.");
+    }
+  }
+
 
 
 

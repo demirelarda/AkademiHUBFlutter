@@ -32,7 +32,6 @@ class UserModel {
     );
   }
 
-
   Map<String, dynamic> toMap() {
     return {
       'userId': userId,
@@ -40,9 +39,9 @@ class UserModel {
       'lastName': lastName,
       'userPoint': userPoint,
       'selectedCourse': selectedCourse,
-      'mainCourseCompletion':mainCourseCompletion,
-      'entCompletion':entCompletion,
-      'englishCompletion':englishCompletion,
+      'mainCourseCompletion': mainCourseCompletion,
+      'entCompletion': entCompletion,
+      'englishCompletion': englishCompletion,
     };
   }
 }

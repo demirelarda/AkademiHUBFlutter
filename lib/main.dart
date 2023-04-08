@@ -50,7 +50,7 @@ class _Wrapper extends StatelessWidget {
           if (snapshot.data?.uid == null) {
             return LoginPage(title: '',);
           } else {
-            return MyHomePage(title: 'Bottom Navigation Bar Demo'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
+            return MyHomePage(title: 'AkademiHUB'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
           }
         } else {
           return CircularProgressIndicator();
