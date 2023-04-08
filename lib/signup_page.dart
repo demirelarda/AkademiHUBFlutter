@@ -4,6 +4,7 @@ import 'package:akademi_hub_flutter/service/authentication_service.dart';
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'main.dart';
 import 'models/user_model.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -53,7 +54,11 @@ class _SignUpPageState extends State<SignUpPage> {
         try {
           await _firestoreService.addUser(newUser);
           _authService.signOut();
-          Navigator.of(context).pushReplacementNamed('/login');
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MyHomePage(title: 'Akademi HUB', initialIndex: 0),
+            ),
+          );
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Kayıt başarılı! Lütfen Giriş Yapın.")));
         } catch (e) {

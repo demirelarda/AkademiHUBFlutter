@@ -48,7 +48,7 @@ class _Wrapper extends StatelessWidget {
           if (snapshot.data?.uid == null) {
             return LoginPage(title: '',);
           } else {
-            return MyHomePage(title: 'Akademi HUB'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
+            return MyHomePage(title: 'Akademi HUB', initialIndex: 0); // Kullanıcı giriş yaptıysa direkt olarak Login'i geç
           }
         } else {
           return CircularProgressIndicator();
@@ -58,10 +58,13 @@ class _Wrapper extends StatelessWidget {
   }
 }
 
+
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title, this.initialIndex = 0}) : super(key: key);
 
   final String title;
+  final int initialIndex;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -69,6 +72,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
@@ -130,4 +139,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
