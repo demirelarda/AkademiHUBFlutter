@@ -21,131 +21,133 @@ class _RankPageState extends State<RankPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _usersStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Bir hata oluştu');
-          }
+      body: SafeArea(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _usersStream,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Bir hata oluştu');
+            }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
 
-          final users = snapshot.data!.docs
-              .map((doc) =>
-                  UserModel.fromMap(doc.data() as Map<String, dynamic>))
-              .toList();
+            final users = snapshot.data!.docs
+                .map((doc) =>
+                UserModel.fromMap(doc.data() as Map<String, dynamic>))
+                .toList();
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: width,
-                height: height / 3.5,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 34, 38, 62),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 40,
-                          child: Text("3"),
-                        ),
-                        Text(
-                          "${users[2].firstName} ${users[2].lastName}",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          "${users[2].userPoint}",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 60,
-                            child: Text("1"),
-                          ),
-                          Text(
-                            "${users[0].firstName} ${users[0].lastName}",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            "${users[0].userPoint}",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ]),
-                    Column(
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: width,
+                  height: height / 3.5,
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 34, 38, 62),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                          bottomRight: Radius.circular(50))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 40,
-                            child: Text("2"),
+                            child: Image.asset("images/bronze-medal.png",scale: 8,),
                           ),
                           Text(
-                            "${users[1].firstName} ${users[1].lastName}",
+                            "${users[2].firstName} ${users[2].lastName}",
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            "${users[1].userPoint}",
+                            "${users[2].userPoint}",
                             style: TextStyle(color: Colors.white),
                           )
-                        ])
-                  ],
+                        ],
+                      ),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 60,
+                              child: Image.asset("images/gold-medal.png",scale: 5,),
+                            ),
+                            Text(
+                              "${users[0].firstName} ${users[0].lastName}",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "${users[0].userPoint}",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ]),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 40,
+                              child: Image.asset("images/silver-medal.png",scale: 8,),
+                            ),
+                            Text(
+                              "${users[1].firstName} ${users[1].lastName}",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "${users[1].userPoint}",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ])
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      UserModel user = users[index];
-                      Color? textColor;
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: users.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        UserModel user = users[index];
+                        Color? textColor;
 
-                      switch (index) {
-                        case 0:
-                          textColor = Colors.yellow[700]; // Altın madalya rengi
-                          break;
-                        case 1:
-                          textColor = Colors.grey; // Gümüş madalya rengi
-                          break;
-                        case 2:
-                          textColor = Color(0xFFCD7F32); // Bronz madalya rengi
-                          break;
-                        default:
-                          textColor = Colors.black;
-                      }
+                        switch (index) {
+                          case 0:
+                            textColor = Colors.yellow[700]; // Altın madalya rengi
+                            break;
+                          case 1:
+                            textColor = Colors.grey; // Gümüş madalya rengi
+                            break;
+                          case 2:
+                            textColor = Color(0xFFCD7F32); // Bronz madalya rengi
+                            break;
+                          default:
+                            textColor = Colors.black;
+                        }
 
-                      return ListTile(
-                        leading: Icon(
-                          Icons.brightness_1,
-                          size: 20.0,
-                          color: Color.fromARGB(255, 34, 38, 62),
-                        ),
-                        trailing: user.selectedCourse == "Flutter"
-                            ? ImageIcon(AssetImage("images/flutter-icon.png"))
-                            : ImageIcon(AssetImage("images/unity-icon.png")),
-                        title: Text(
-                            "${user.userPoint} ${user.firstName} ${user.lastName}",
-                            style: TextStyle(color: textColor)),
-                      );
-                    }),
-              ),
-            ],
-          );
-        },
+                        return ListTile(
+                          leading: Icon(
+                            Icons.brightness_1,
+                            size: 20.0,
+                            color: Color.fromARGB(255, 34, 38, 62),
+                          ),
+                          trailing: user.selectedCourse == "Flutter"
+                              ? ImageIcon(AssetImage("images/flutter-icon.png"))
+                              : ImageIcon(AssetImage("images/unity-icon.png")),
+                          title: Text(
+                              "${user.userPoint} ${user.firstName} ${user.lastName}",
+                              style: TextStyle(color: textColor)),
+                        );
+                      }),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

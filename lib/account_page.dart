@@ -12,6 +12,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home: Scaffold(
         body: FutureBuilder<UserModel>(
@@ -57,9 +58,9 @@ class AccountPage extends StatelessWidget {
                                         Container(
                                           decoration: BoxDecoration(
                                             color:
-                                                Color.fromARGB(255, 34, 38, 62),
+                                            Color.fromARGB(255, 34, 38, 62),
                                             borderRadius:
-                                                BorderRadius.circular(20),
+                                            BorderRadius.circular(20),
                                           ),
                                           padding: EdgeInsets.symmetric(
                                               vertical: 10, horizontal: 50),
@@ -95,6 +96,7 @@ class AccountPage extends StatelessWidget {
                           ],
                         ),
                       ),
+
                       _buildProgressRow(courseImage, progressPercentages[0]),
                       SizedBox(height: 20),
                       _buildProgressRow("images/ucak.png", progressPercentages[1]),

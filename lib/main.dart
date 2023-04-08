@@ -24,10 +24,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'AkademiHUB',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: _Wrapper(),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
@@ -50,7 +48,7 @@ class _Wrapper extends StatelessWidget {
           if (snapshot.data?.uid == null) {
             return LoginPage(title: '',);
           } else {
-            return MyHomePage(title: 'AkademiHUB'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
+            return MyHomePage(title: 'Akademi HUB'); //eğer kullanıcı giriş yaptıysa direkt olarak Login'i geç
           }
         } else {
           return CircularProgressIndicator();
@@ -88,38 +86,41 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      appBar: null,
+      body: SafeArea(
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        elevation: 20,
+        unselectedItemColor: Colors.white,
+        unselectedLabelStyle: TextStyle(color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 34, 38, 62),
         // gölge ekleme
         type: BottomNavigationBarType.fixed,
         // item'lar fixed olsun
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.blueGrey),
+
+            icon: Icon(Icons.home, color: Colors.white),
             activeIcon: Icon(Icons.home, color: Colors.blue),
-            label: 'Home',
+            label: 'Anasayfa',
+
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add, color: Colors.blueGrey),
+            icon: Icon(Icons.post_add, color: Colors.white),
             activeIcon: Icon(Icons.post_add, color: Colors.blue),
-            label: 'Post',
+            label: 'Gönderi',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sort, color: Colors.blueGrey),
+            icon: Icon(Icons.sort, color: Colors.white),
             activeIcon: Icon(Icons.sort, color: Colors.blue),
-            label: 'Rank',
+            label: 'Liderlik Tablosu',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle, color: Colors.blueGrey),
+            icon: Icon(Icons.account_circle, color: Colors.white),
             activeIcon: Icon(Icons.account_circle, color: Colors.blue),
-            label: 'Account',
+            label: 'Hesabım',
           ),
         ],
         currentIndex: _selectedIndex,

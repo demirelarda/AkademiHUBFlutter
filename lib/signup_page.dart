@@ -21,6 +21,8 @@ class _SignUpPageState extends State<SignUpPage> {
   int? _randomNumber2;
   int? _randomNumber3;
 
+  var themeColor = Color.fromARGB(255, 34, 38, 62);
+
   final AuthenticationService _authService = AuthenticationService();
   final FirestoreService _firestoreService = FirestoreService();
 
@@ -62,83 +64,105 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
-        title: Text('Sign Up'),
+        backgroundColor: Color.fromARGB(255, 34, 38, 62),
+        title: Text('Üye Ol'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: _firstNameController,
-                decoration: InputDecoration(
-                  labelText: 'First Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _lastNameController,
-                decoration: InputDecoration(
-                  labelText: 'Last Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Unity'),
-                  Radio<String>(
-                    value: 'Unity',
-                    groupValue: _selectedCourse,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _selectedCourse = value!;
-                      });
-                    },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left:16.0,right: 16,top: 40),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("İsim:")),
+                TextField(
+                  controller: _firstNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Adınızı Giriniz',
+                    border: OutlineInputBorder(),
                   ),
-                  SizedBox(width: 16),
-                  Text('Flutter'),
-                  Radio<String>(
-                    value: 'Flutter',
-                    groupValue: _selectedCourse,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _selectedCourse = value!;
-                      });
-                    },
+                ),
+                SizedBox(height: 16),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Soyisim:")),
+                TextField(
+                  controller: _lastNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Soyadınızı Giriniz',
+                    border: OutlineInputBorder(),
                   ),
-                ],
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _signUp,
-                child: Text('Sign Up'),
-              ),
-            ],
+                ),
+                SizedBox(height: 16),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("E-mail:")),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email Adresinizi Giriniz',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Şifre:")),
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Şifrenizi Giriniz',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text("Seçilen Alan:",style: TextStyle(
+                    fontWeight: FontWeight.bold
+                ),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    ImageIcon(AssetImage("images/unity-icon.png")),
+                    Radio<String>(
+                      value: 'Unity',
+                      groupValue: _selectedCourse,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _selectedCourse = value!;
+                        });
+                      },
+                    ),
+                    SizedBox(width: 16),
+                    ImageIcon(AssetImage("images/flutter-icon.png")),
+                    Radio<String>(
+                      value: 'Flutter',
+                      groupValue: _selectedCourse,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _selectedCourse = value!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 34, 38, 62),
+                  ),
+                  onPressed: _signUp,
+                  child: Text('Üye Ol'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
