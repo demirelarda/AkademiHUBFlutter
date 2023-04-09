@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     final AuthenticationService _authService = AuthenticationService();
@@ -32,7 +30,7 @@ class AccountPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(user.firstName+" "+user.lastName),
+                        Text(user.firstName + " " + user.lastName),
                         Icon(Icons.verified, color: Colors.blue),
                         SizedBox(
                           height: 50,
@@ -115,16 +113,39 @@ class AccountPage extends StatelessWidget {
                                 ],
                               ),
                               Padding(
-                                  padding: EdgeInsets.only(left: 275, top: 50),
-                                  child: FloatingActionButton(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 34, 38, 62),
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.refresh,
-                                      size: 45,
+                                padding: const EdgeInsets.only(
+                                    right: 150, bottom: 100),
+                                child: Container(
+                                  height: 60,
+                                  width: 150,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Color.fromARGB(255, 34, 38, 62),
                                     ),
-                                  )),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "   ★ ${user.userPoint} AP",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          "   ${user.selectedCourse} Developer",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 height: 50,
                               ),
@@ -203,10 +224,8 @@ class AccountPage extends StatelessWidget {
         Text(
           " %$progressPercentage",
           style: TextStyle(fontWeight: FontWeight.w400),
-        )
+        ),
       ],
     );
   }
 }
-
-
