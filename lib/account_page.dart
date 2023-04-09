@@ -73,7 +73,7 @@ class AccountPage extends StatelessWidget {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -87,7 +87,7 @@ class AccountPage extends StatelessWidget {
                                               color: Color.fromARGB(
                                                   255, 34, 38, 62),
                                               borderRadius:
-                                                  BorderRadius.circular(20),
+                                              BorderRadius.circular(20),
                                             ),
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 10, horizontal: 50),
@@ -114,21 +114,21 @@ class AccountPage extends StatelessWidget {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    right: 150, bottom: 100),
+                                    right: 150, bottom: 30),
                                 child: Container(
                                   height: 60,
                                   width: 150,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                      BorderRadius.all(Radius.circular(10)),
                                       color: Color.fromARGB(255, 34, 38, 62),
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "   ★ ${user.userPoint} AP",
