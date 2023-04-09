@@ -86,6 +86,8 @@ class _PostPageState extends State<PostPage> {
                       'Teknik Sorun',
                       'Özel Soru',
                       'Yazılımsal sorun',
+                      'Proje',
+                      'Tavsiye',
                       'Diğer',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(

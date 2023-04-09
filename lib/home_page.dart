@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FirestoreService _firestoreService = FirestoreService();
   final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  String? _selectedCategory;
 
   void _toggleLike(Post post, ValueNotifier<int> likes) async {
     bool wasLiked = _isPostLiked(post);
@@ -30,6 +31,21 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  //listedkei tüm Post'lardaki mevcut kategorileri al
+  List<String> _getCategories(List<Post> posts) {
+    Set<String> categories = {};
+    for (Post post in posts) {
+      categories.add(post.category);
+    }
+    return categories.toList();
+  }
+
+  void _filterByCategory(String? category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,93 +58,135 @@ class _HomePageState extends State<HomePage> {
             return Center(child: Text('Bir hata oluştu'));
           } else {
             List<Post> posts = snapshot.data!;
+            List<String> categories = _getCategories(posts);
+            List<Post> filteredPosts = _selectedCategory == null
+                ? posts
+                : posts
+                    .where((post) => post.category == _selectedCategory)
+                    .toList();
+
             return RefreshIndicator(
               onRefresh: _refreshPosts,
-              child: ListView.builder(
-                itemCount: posts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final likes = ValueNotifier<int>(posts[index].likes);
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PostDetailsPage(post: posts[index]),
+              child: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    floating: true,
+                    snap: true,
+                    backgroundColor: Colors.white,
+                    title: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: categories.map((category) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: FilterChip(
+                              label: Text(category),
+                              selected: _selectedCategory == category,
+                              selectedColor: Colors.lightBlue,
+                              onSelected: (bool selected) {
+                                _filterByCategory(selected ? category : null);
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final likes =
+                            ValueNotifier<int>(filteredPosts[index].likes);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PostDetailsPage(
+                                      post: filteredPosts[index]),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          filteredPosts[index].sentByUserName,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 4),
+                                        if (filteredPosts[index]
+                                            .isPostSenderModerator)
+                                          Icon(Icons.verified,
+                                              color: Colors.blue, size: 18),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      filteredPosts[index].title,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        InkWell(
+                                          onTap: () => _toggleLike(
+                                              filteredPosts[index], likes),
+                                          child: ValueListenableBuilder(
+                                            valueListenable: likes,
+                                            builder: (context, value, child) {
+                                              return Icon(
+                                                Icons.favorite,
+                                                color: _isPostLiked(
+                                                        filteredPosts[index])
+                                                    ? Colors.red
+                                                    : Colors.grey,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        ValueListenableBuilder<int>(
+                                          valueListenable: likes,
+                                          builder: (context, value, child) {
+                                            return Text('$value');
+                                          },
+                                        ),
+                                        SizedBox(width: 15),
+                                        Icon(Icons.comment, color: Colors.grey),
+                                        SizedBox(width: 5),
+                                        Text(
+                                            '${filteredPosts[index].commentCount}'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    posts[index].sentByUserName,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(width: 4),
-                                  if (posts[index].isPostSenderModerator)
-                                    Icon(Icons.verified,
-                                        color: Colors.blue, size: 18),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                posts[index].title,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: () =>
-                                        _toggleLike(posts[index], likes),
-                                    child: ValueListenableBuilder(
-                                      valueListenable: likes,
-                                      builder: (context, value, child) {
-                                        return Icon(
-                                          Icons.favorite,
-                                          color: _isPostLiked(posts[index])
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  ValueListenableBuilder<int>(
-                                    valueListenable: likes,
-                                    builder: (context, value, child) {
-                                      return Text('$value');
-                                    },
-                                  ),
-                                  SizedBox(width: 15),
-                                  Icon(Icons.comment, color: Colors.grey),
-                                  SizedBox(width: 5),
-                                  Text('${posts[index].commentCount}'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      childCount: filteredPosts.length,
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             );
           }
