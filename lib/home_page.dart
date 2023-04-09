@@ -22,9 +22,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-
   bool _isPostLiked(Post post) {
     return post.likedByUsers.contains(currentUserId);
+  }
+
+  Future<void> _refreshPosts() async {
+    setState(() {});
   }
 
   @override
@@ -39,69 +42,72 @@ class _HomePageState extends State<HomePage> {
             return Center(child: Text('Bir hata oluştu'));
           } else {
             List<Post> posts = snapshot.data!;
-            return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PostDetailsPage(post: posts[index]),
+            return RefreshIndicator(
+              onRefresh: _refreshPosts,
+              child: ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PostDetailsPage(post: posts[index]),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                      );
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              posts[index].sentByUserName,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              posts[index].title,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                  onTap: () => _toggleLike(posts[index]),
-                                  child: Icon(
-                                    Icons.favorite,
-                                    color: _isPostLiked(posts[index]) ? Colors.red : Colors.grey,
-                                  ),
+                        elevation: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                posts[index].sentByUserName,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                SizedBox(width: 5),
-                                Text('${posts[index].likes}'),
-                                SizedBox(width: 15),
-                                Icon(Icons.comment, color: Colors.grey),
-                                SizedBox(width: 5),
-                                Text('${posts[index].commentCount}'),
-                              ],
-                            ),
-                          ],
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                posts[index].title,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () => _toggleLike(posts[index]),
+                                    child: Icon(
+                                      Icons.favorite,
+                                      color: _isPostLiked(posts[index]) ? Colors.red : Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text('${posts[index].likes}'),
+                                  SizedBox(width: 15),
+                                  Icon(Icons.comment, color: Colors.grey),
+                                  SizedBox(width: 5),
+                                  Text('${posts[index].commentCount}'),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           }
         },

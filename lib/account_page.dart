@@ -38,23 +38,25 @@ class AccountPage extends StatelessWidget {
               return Scaffold(
                 body: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(height: 20),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 20.0, left: 20.0, bottom: 20.0),
+                                      top: 2.0, left: 20.0, bottom: 20.0),
                                   child: Align(
                                     alignment: Alignment.topLeft,
-                                    child: Column(
+                                    child: Stack(
                                       children: [
+
                                         Container(
                                           decoration: BoxDecoration(
                                             color:
@@ -72,6 +74,7 @@ class AccountPage extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+
                                       ],
                                     ),
                                   ),
@@ -85,6 +88,15 @@ class AccountPage extends StatelessWidget {
                                 )
                               ],
                             ),
+                            Padding(
+                                padding: EdgeInsets.only(left: 275,top: 50),
+                                child: FloatingActionButton(
+                                  backgroundColor: Color.fromARGB(255, 34, 38, 62),
+                                  onPressed: (){
+
+                                  },
+                                  child: Icon(Icons.refresh,size: 45,),
+                                )),
                             SizedBox(
                               height: 50,
                             ),
@@ -92,7 +104,7 @@ class AccountPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 34, 38, 62),
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w400)),
+                                    fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -103,13 +115,19 @@ class AccountPage extends StatelessWidget {
                       SizedBox(height: 20),
                       _buildProgressRow("images/book.png", progressPercentages[2]),
                       SizedBox(height: 50),
-                      ElevatedButton(
-                        onPressed: () {
-                          _authService.signOut();
-                        },
-                        child: Text('Çıkış Yap'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 34, 38, 62),
+                      SizedBox(
+                        height: 50,
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _authService.signOut();
+                          },
+                          child: Text('Çıkış Yap'),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            primary: Color.fromARGB(255, 34, 38, 62),
+                          ),
                         ),
                       ),
                       SizedBox(height: 50),
