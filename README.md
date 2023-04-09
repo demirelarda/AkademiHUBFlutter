@@ -1,16 +1,7 @@
-# akademi_hub_flutter
+# AkademiHUB
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* AkademiHUB akademi bursiyerlerinin ve moderatörlerinin,gerek motivasyon gerekse yardımlaşma amacıyla kullanabileceği bir iletişim platformudur.
+* Uygulama açıldığında,backend'de firebase ile desteklediğimiz bir Authentication ekranı ve  üye olma butonu karşılıyor.Burada kaydınız yoksa, Üye ol kısmından gerekli bilgileri girerek üye olabiliyoruz.
+* Anasayfa kısmında, belirli konu başlıkları altında verilen içerikler paylaşılıyor.Bu içerikler de aynı şekilde firestore temelli bir  veri tabanıyla destekleniyor.Gönderilere tıklandığında,kullanıcı başka kullanıcıların paylaştığı gönderilere yorum ekleyebilir, beğenebilir ve yanıtlardan,bahsedilen sorunu çözeni yeşillendirebilirken,Anasayfanın yanında bulunan "Gönderi" sayfasında,kullanıcı kendi gönderisini oluşturarak paylaşabiliyor. Bu bölümün en güzel yanlarından biri de,gönderilerin sınıflandırılması amacıyla konu kategori tiplerinin seçilmesi opsiyonu.
+* Hemen yanında bulunan "Liderlik Tablosu" bölümündeyse,akademi bursiyerlerinin derslerdeki ilerlemeleri,yanıtladıkları sorular,aldıkları beğeniler gibi faktörlerden elde edilen puanlarla göre oluşturulmuş bir liderlik tablosu bulunuyor.Diğer özellikler gibi,bu bilgiler de Firebase tarafında tutulan verilerden elde ediliyor.
+* En sonda ise Kullanıcının,kendi ismini,derslerindeki ilerlemelerini ve Akademi Puanı gibi kişisel bilgilerini gösteren bir "Hesabım" sayfası bulunuyor.
