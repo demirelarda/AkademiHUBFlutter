@@ -18,7 +18,6 @@ class _PostPageState extends State<PostPage> {
 
   final FirestoreService _firestoreService = FirestoreService();
 
-  // Kullanıcının moderatör olup olmadığını kontrol eden fonksiyon
   Future<bool> _isUserModerator(String userId) async {
     DocumentSnapshot<Map<String, dynamic>> userDoc =
         await _firestoreService.getUserData(userId);
@@ -123,7 +122,6 @@ class _PostPageState extends State<PostPage> {
                           isPostSenderModerator: isModerator,
                         );
 
-                        // gönderi eklenirken progress bar göster
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -137,10 +135,8 @@ class _PostPageState extends State<PostPage> {
                         try {
                           await _firestoreService.addPost(newPost);
 
-                          // progress barı gizle
                           Navigator.pop(context);
 
-                          // başarılı snackbar'ı göster
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 content: Text('Gönderi başarıyla eklendi')),
@@ -148,11 +144,9 @@ class _PostPageState extends State<PostPage> {
                           Navigator.pushNamedAndRemoveUntil(
                               context, '/', (_) => false);
                         } catch (e) {
-                          // progress barı gizle
                           Navigator.pop(context);
 
                           print(e.toString());
-                          // hata snackbar'ı göster
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Gönderi eklenemedi')),
                           );

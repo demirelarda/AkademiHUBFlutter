@@ -118,13 +118,13 @@ class _RankPageState extends State<RankPage> {
 
                         switch (index) {
                           case 0:
-                            textColor = Colors.yellow[700]; // Altın madalya rengi
+                            textColor = Colors.yellow[700];
                             break;
                           case 1:
-                            textColor = Colors.grey; // Gümüş madalya rengi
+                            textColor = Colors.grey;
                             break;
                           case 2:
-                            textColor = Color(0xFFCD7F32); // Bronz madalya rengi
+                            textColor = Color(0xFFCD7F32);
                             break;
                           default:
                             textColor = Colors.black;

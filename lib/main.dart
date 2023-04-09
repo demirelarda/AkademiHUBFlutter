@@ -79,9 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.white,
         unselectedLabelStyle: TextStyle(color: Colors.white),
         backgroundColor: Color.fromARGB(255, 34, 38, 62),
-        // gölge ekleme
         type: BottomNavigationBarType.fixed,
-        // item'lar fixed olsun
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
 

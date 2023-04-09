@@ -54,7 +54,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           isSolved: false,
           likedByUsers: <String>[],
           isCommentSenderModerator: isUserModerator ?? false,
-          createdAt: Timestamp.now()); // createdAt alanını ayarlayın
+          createdAt: Timestamp.now());
 
       try {
         await _firestoreService.addComment(newComment);
