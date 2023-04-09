@@ -11,3 +11,17 @@
 ## Notlar:
 * Ders ilerlemeleri her kullanıcı için kayıt olma aşamasında rastgele olarak atanıyor. Normalde gerekli izinler sağlandığında bu bilgiler bir backend tarafından sağlanabilir.
 * Moderatör hesabı olarak akademi için oluşturduğumuz hesap: email: `oua@gmail.com` , şifre: `12345678` (Mavi tikli hesap), eğer daha fazla moderatör hesabı istenirse manuel şekilde yetkilendirme yapılması gerekiyor. Firestore'da `users` collection'unda istenilen User'da `isUserModerator` field'ı `true` yapılırsa kullanıcıya moderatör yetkisi veriliyor. (Uygulama ilerletilirse basit bir admin paneliyle bu işlemler daha kolay hale gelebilir.)
+
+## Firestore Yapısı:
+
+* Comments:
+
+  ![firestore1](https://user-images.githubusercontent.com/93993257/230802204-02f3974f-a239-4408-8dc7-ed3a0e1bd430.PNG)
+
+* Posts:
+
+  ![firestore2](https://user-images.githubusercontent.com/93993257/230802211-27b8525d-e734-4064-a30b-571516dfdd5f.PNG)
+
+* Users:
+
+  ![firestore3](https://user-images.githubusercontent.com/93993257/230802220-50581fd8-4b51-48b0-8d1d-7498182edb07.PNG)
