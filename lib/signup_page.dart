@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
           await _firestoreService.addUser(newUser);
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Wrapper()));
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Kayıt başarılı! Lütfen Giriş Yapın.")));
+              .showSnackBar(SnackBar(content: Text("Kayıt başarılı! Hoşgeldiniz.")));
         } catch (e) {
           print('Error adding user to Firestore: $e');
           ScaffoldMessenger.of(context)
