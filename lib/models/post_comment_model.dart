@@ -10,6 +10,7 @@ class PostCommentModel {
   bool isSolved;
   List<String> likedByUsers;
   bool isCommentSenderModerator;
+  Timestamp createdAt;
 
   PostCommentModel({
     required this.id,
@@ -21,6 +22,7 @@ class PostCommentModel {
     required this.isSolved,
     required this.likedByUsers,
     required this.isCommentSenderModerator,
+    required this.createdAt,
   });
 
   factory PostCommentModel.fromFirestore(DocumentSnapshot doc) {
@@ -35,7 +37,8 @@ class PostCommentModel {
       content: data['content'] ?? '',
       isSolved: data['isSolved'] ?? false,
       likedByUsers: List<String>.from(data['likedByUsers'] ?? []),
-      isCommentSenderModerator: data['isCommentSenderModerator'] ?? false
+      isCommentSenderModerator: data['isCommentSenderModerator'] ?? false,
+      createdAt: data['createdAt'] ?? Timestamp.now(),
     );
   }
 
@@ -48,7 +51,8 @@ class PostCommentModel {
       'content':content,
       'isSolved': isSolved,
       'likedByUsers': likedByUsers,
-      'isCommentSenderModerator': isCommentSenderModerator
+      'isCommentSenderModerator': isCommentSenderModerator,
+      'createdAt': createdAt,
     };
   }
 

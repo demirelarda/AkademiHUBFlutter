@@ -1,4 +1,5 @@
 import 'package:akademi_hub_flutter/service/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           sentByUserName: currentUserName!,
           isSolved: false,
           likedByUsers: <String>[],
-          isCommentSenderModerator: isUserModerator ?? false);
+          isCommentSenderModerator: isUserModerator ?? false,
+          createdAt: Timestamp.now()); // createdAt alanını ayarlayın
 
       try {
         await _firestoreService.addComment(newComment);
@@ -137,6 +139,9 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                             return Center(child: Text('An error occurred'));
                           } else {
                             List<PostCommentModel> comments = snapshot.data!;
+                            comments.sort((a, b) => b.createdAt.compareTo(
+                                a.createdAt)); // Yorumları tarihe göre sırala
+
                             return ListView.builder(
                               itemCount: comments.length,
                               itemBuilder: (BuildContext context, int index) {
