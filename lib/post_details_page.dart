@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'models/post_comment_model.dart';
 import 'models/post_model.dart';
+import 'models/user_model.dart';
 
 class PostDetailsPage extends StatefulWidget {
   final Post post;
@@ -21,6 +22,22 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   final String? currentUserName =
       FirebaseAuth.instance.currentUser?.displayName;
   String? _selectedCommentId;
+  bool? isUserModerator;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfUserIsModerator();
+  }
+
+  Future<void> _checkIfUserIsModerator() async {
+    if (currentUserId != null) {
+      UserModel user = await _firestoreService.getUserModel(currentUserId!);
+      setState(() {
+        isUserModerator = user.isModerator;
+      });
+    }
+  }
 
   void _submitComment() async {
     if (_commentController.text.isNotEmpty) {
@@ -34,7 +51,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           sentByUserId: currentUserId!,
           sentByUserName: currentUserName!,
           isSolved: false,
-          likedByUsers: <String>[]);
+          likedByUsers: <String>[],
+          isCommentSenderModerator: isUserModerator ?? false);
 
       try {
         await _firestoreService.addComment(newComment);
@@ -185,9 +203,16 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                comment.sentByUserName,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    comment.sentByUserName,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 5),
+                  if (comment.isCommentSenderModerator)
+                    Icon(Icons.verified, color: Colors.blue, size: 16),
+                ],
               ),
               SizedBox(height: 8),
               Text(comment.content),

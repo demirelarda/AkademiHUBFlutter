@@ -137,6 +137,15 @@ class FirestoreService {
         .get();
   }
 
+  Future<UserModel> getUserModel(String userId) async {
+    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get();
+    return UserModel.fromMap(doc.data()!);
+  }
+
+
 
 
 
