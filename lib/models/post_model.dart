@@ -13,6 +13,7 @@ class Post {
   int commentCount;
   final bool isSolved;
   List<String> likedByUsers;
+  bool isPostSenderModerator;
 
   Post({
     required this.id,
@@ -27,6 +28,7 @@ class Post {
     required this.commentCount,
     required this.isSolved,
     required this.likedByUsers,
+    required this.isPostSenderModerator,
   });
 
   factory Post.fromSnapshot(DocumentSnapshot snapshot) {
@@ -44,6 +46,7 @@ class Post {
       commentCount: data['commentCount'] ?? 0,
       isSolved: data['isSolved'] ?? false,
       likedByUsers: List<String>.from(data['likedByUsers'] ?? []),
+      isPostSenderModerator: data['isPostSenderModerator'] ?? false,
     );
   }
 
@@ -60,6 +63,7 @@ class Post {
       'commentCount': commentCount,
       'isSolved': isSolved,
       'likedByUsers': likedByUsers,
+      'isPostSenderModerator': isPostSenderModerator,
     };
   }
 

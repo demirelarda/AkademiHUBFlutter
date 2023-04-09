@@ -18,6 +18,13 @@ class _PostPageState extends State<PostPage> {
 
   final FirestoreService _firestoreService = FirestoreService();
 
+  // Kullanıcının moderatör olup olmadığını kontrol eden fonksiyon
+  Future<bool> _isUserModerator(String userId) async {
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await _firestoreService.getUserData(userId);
+    return userDoc.data()?['isModerator'] ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -94,19 +101,24 @@ class _PostPageState extends State<PostPage> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        bool isModerator = false;
+                        if (user != null) {
+                          isModerator = await _isUserModerator(user.uid);
+                        }
                         Post newPost = Post(
-                            id: '',
-                            title: _titleController.text,
-                            content: _contentController.text,
-                            category: _selectedCategory!,
-                            createdAt: Timestamp.now(),
-                            likes: 0,
-                            postScore: 0,
-                            sentByUserId: user!.uid,
-                            sentByUserName: user.displayName ?? 'User',
-                            commentCount: 0,
-                            isSolved: false,
-                            likedByUsers: <String>[]
+                          id: '',
+                          title: _titleController.text,
+                          content: _contentController.text,
+                          category: _selectedCategory!,
+                          createdAt: Timestamp.now(),
+                          likes: 0,
+                          postScore: 0,
+                          sentByUserId: user!.uid,
+                          sentByUserName: user.displayName ?? 'User',
+                          commentCount: 0,
+                          isSolved: false,
+                          likedByUsers: <String>[],
+                          isPostSenderModerator: isModerator,
                         );
 
                         // gönderi eklenirken progress bar göster
@@ -128,9 +140,11 @@ class _PostPageState extends State<PostPage> {
 
                           // başarılı snackbar'ı göster
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Gönderi başarıyla eklendi')),
+                            SnackBar(
+                                content: Text('Gönderi başarıyla eklendi')),
                           );
-                          Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (_) => false);
                         } catch (e) {
                           // progress barı gizle
                           Navigator.pop(context);
@@ -145,7 +159,6 @@ class _PostPageState extends State<PostPage> {
                     },
                     child: Text('Gönderiyi Yolla'),
                   ),
-
                 ],
               ),
             ),

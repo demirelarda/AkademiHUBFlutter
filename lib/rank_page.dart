@@ -36,6 +36,7 @@ class _RankPageState extends State<RankPage> {
             final users = snapshot.data!.docs
                 .map((doc) =>
                 UserModel.fromMap(doc.data() as Map<String, dynamic>))
+                .where((user) => !user.isModerator)
                 .toList();
 
             return Column(

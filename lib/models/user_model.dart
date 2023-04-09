@@ -7,6 +7,7 @@ class UserModel {
   final int mainCourseCompletion;
   final int entCompletion;
   final int englishCompletion;
+  final bool isModerator;
 
   UserModel({
     required this.userId,
@@ -17,6 +18,7 @@ class UserModel {
     required this.mainCourseCompletion,
     required this.entCompletion,
     required this.englishCompletion,
+    required this.isModerator,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> data) {
@@ -29,6 +31,7 @@ class UserModel {
       mainCourseCompletion: data['mainCourseCompletion'] ?? 0,
       entCompletion: data['entCompletion'] ?? 0,
       englishCompletion: data['englishCompletion'] ?? 0,
+      isModerator: data['isModerator'] ?? false,
     );
   }
 
@@ -42,6 +45,7 @@ class UserModel {
       'mainCourseCompletion': mainCourseCompletion,
       'entCompletion': entCompletion,
       'englishCompletion': englishCompletion,
+      'isModerator':isModerator,
     };
   }
 }

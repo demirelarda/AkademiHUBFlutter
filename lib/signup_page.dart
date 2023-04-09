@@ -35,6 +35,8 @@ class _SignUpPageState extends State<SignUpPage> {
       UserCredential? userCredential = await _authService.signUpWithEmail(
           _emailController.text, _passwordController.text,_firstNameController.text,_lastNameController.text);
 
+      //Kullanıcının kursları tamamlama yüzdesi rastgele olarak belirleniyor.
+
       _randomNumber1 = Random().nextInt(100);
       _randomNumber2 = Random().nextInt(100);
       _randomNumber3 = Random().nextInt(100);
@@ -49,6 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
           mainCourseCompletion: _randomNumber1!,
           entCompletion: _randomNumber2!,
           englishCompletion: _randomNumber3!,
+          isModerator: false,
         );
 
         try {

@@ -25,116 +25,145 @@ class AccountPage extends StatelessWidget {
             } else {
               UserModel user = snapshot.data!;
 
-              String courseImage = user.selectedCourse == "Flutter"
-                  ? "images/flutter-icon.png"
-                  : "images/unity-icon.png";
-
-              List<String> progressPercentages = [
-                user.mainCourseCompletion.toString(),
-                user.entCompletion.toString(),
-                user.englishCompletion.toString()
-              ];
-
-              return Scaffold(
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 2.0, left: 20.0, bottom: 20.0),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Stack(
-                                      children: [
-
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color:
-                                            Color.fromARGB(255, 34, 38, 62),
-                                            borderRadius:
-                                            BorderRadius.circular(20),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 50),
-                                          child: Text(
-                                            "${user.firstName} ${user.lastName}",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 60,
-                                  child: ClipOval(
-                                    child: Image.asset(courseImage),
-                                  ),
-                                )
-                              ],
+              if (user.isModerator) {
+                return Scaffold(
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(user.firstName+" "+user.lastName),
+                        Icon(Icons.verified, color: Colors.blue),
+                        SizedBox(
+                          height: 50,
+                          width: 200,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _authService.signOut();
+                            },
+                            child: Text('Çıkış Yap'),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              primary: Color.fromARGB(255, 34, 38, 62),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(left: 275,top: 50),
-                                child: FloatingActionButton(
-                                  backgroundColor: Color.fromARGB(255, 34, 38, 62),
-                                  onPressed: (){
-
-                                  },
-                                  child: Icon(Icons.refresh,size: 45,),
-                                )),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Text("EĞİTİMLERİM",
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 34, 38, 62),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-
-                      _buildProgressRow(courseImage, progressPercentages[0]),
-                      SizedBox(height: 20),
-                      _buildProgressRow("images/ucak.png", progressPercentages[1]),
-                      SizedBox(height: 20),
-                      _buildProgressRow("images/book.png", progressPercentages[2]),
-                      SizedBox(height: 50),
-                      SizedBox(
-                        height: 50,
-                        width: 200,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _authService.signOut();
-                          },
-                          child: Text('Çıkış Yap'),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            primary: Color.fromARGB(255, 34, 38, 62),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 50),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                String courseImage = user.selectedCourse == "Flutter"
+                    ? "images/flutter-icon.png"
+                    : "images/unity-icon.png";
+
+                List<String> progressPercentages = [
+                  user.mainCourseCompletion.toString(),
+                  user.entCompletion.toString(),
+                  user.englishCompletion.toString()
+                ];
+
+                return Scaffold(
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2.0, left: 20.0, bottom: 20.0),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Color.fromARGB(
+                                                  255, 34, 38, 62),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 50),
+                                            child: Text(
+                                              "${user.firstName} ${user.lastName}",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 60,
+                                    child: ClipOval(
+                                      child: Image.asset(courseImage),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(left: 275, top: 50),
+                                  child: FloatingActionButton(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 34, 38, 62),
+                                    onPressed: () {},
+                                    child: Icon(
+                                      Icons.refresh,
+                                      size: 45,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              Text("EĞİTİMLERİM",
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 34, 38, 62),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        _buildProgressRow(courseImage, progressPercentages[0]),
+                        SizedBox(height: 20),
+                        _buildProgressRow(
+                            "images/ucak.png", progressPercentages[1]),
+                        SizedBox(height: 20),
+                        _buildProgressRow(
+                            "images/book.png", progressPercentages[2]),
+                        SizedBox(height: 50),
+                        SizedBox(
+                          height: 50,
+                          width: 200,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _authService.signOut();
+                            },
+                            child: Text('Çıkış Yap'),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              primary: Color.fromARGB(255, 34, 38, 62),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 50),
+                      ],
+                    ),
+                  ),
+                );
+              }
             }
           },
         ),

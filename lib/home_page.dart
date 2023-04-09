@@ -70,12 +70,20 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                posts[index].sentByUserName,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    posts[index].sentByUserName,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  if (posts[index].isPostSenderModerator)
+                                    Icon(Icons.verified,
+                                        color: Colors.blue, size: 18),
+                                ],
                               ),
                               SizedBox(height: 10),
                               Text(
