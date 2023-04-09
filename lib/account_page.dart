@@ -5,12 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
-  final AuthenticationService _authService = AuthenticationService();
-  final FirestoreService _firestoreService = FirestoreService();
-  final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationService _authService = AuthenticationService();
+    final FirestoreService _firestoreService = FirestoreService();
+    final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -207,3 +208,5 @@ class AccountPage extends StatelessWidget {
     );
   }
 }
+
+
