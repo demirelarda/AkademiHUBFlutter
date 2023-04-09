@@ -14,12 +14,12 @@ class _HomePageState extends State<HomePage> {
   final FirestoreService _firestoreService = FirestoreService();
   final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
-  void _toggleLike(Post post) async {
+  void _toggleLike(Post post, ValueNotifier<int> likes) async {
     bool wasLiked = _isPostLiked(post);
     await _firestoreService.updatePostLikeStatus(post, currentUserId!);
     int points = wasLiked ? -10 : 10;
     await _firestoreService.updateUserPoints(post.sentByUserId, points);
-    setState(() {});
+    likes.value = wasLiked ? likes.value - 1 : likes.value + 1;
   }
 
   bool _isPostLiked(Post post) {
@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
               child: ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final likes = ValueNotifier<int>(posts[index].likes);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
@@ -86,14 +87,27 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   InkWell(
-                                    onTap: () => _toggleLike(posts[index]),
-                                    child: Icon(
-                                      Icons.favorite,
-                                      color: _isPostLiked(posts[index]) ? Colors.red : Colors.grey,
+                                    onTap: () =>
+                                        _toggleLike(posts[index], likes),
+                                    child: ValueListenableBuilder(
+                                      valueListenable: likes,
+                                      builder: (context, value, child) {
+                                        return Icon(
+                                          Icons.favorite,
+                                          color: _isPostLiked(posts[index])
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        );
+                                      },
                                     ),
                                   ),
                                   SizedBox(width: 5),
-                                  Text('${posts[index].likes}'),
+                                  ValueListenableBuilder<int>(
+                                    valueListenable: likes,
+                                    builder: (context, value, child) {
+                                      return Text('$value');
+                                    },
+                                  ),
                                   SizedBox(width: 15),
                                   Icon(Icons.comment, color: Colors.grey),
                                   SizedBox(width: 5),
