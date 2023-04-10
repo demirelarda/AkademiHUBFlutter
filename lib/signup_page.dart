@@ -52,12 +52,14 @@ class _SignUpPageState extends State<SignUpPage> {
       _randomNumber2 = Random().nextInt(100);
       _randomNumber3 = Random().nextInt(100);
 
+      int userPointFromCourses = (_randomNumber1!+_randomNumber2!+_randomNumber3!)*20;
+
       if (userCredential != null) {
         UserModel newUser = UserModel(
           userId: userCredential.user!.uid,
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
-          userPoint: 0,
+          userPoint: userPointFromCourses,
           selectedCourse: _selectedCourse,
           mainCourseCompletion: _randomNumber1!,
           entCompletion: _randomNumber2!,
