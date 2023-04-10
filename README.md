@@ -21,6 +21,7 @@
 * Moderatör hesabı olarak akademi için oluşturduğumuz hesap: email: `oua@gmail.com` , şifre: `12345678` (Mavi tikli hesap), eğer daha fazla moderatör hesabı istenirse manuel şekilde yetkilendirme yapılması gerekiyor. Firestore'da `users` collection'unda istenilen User'da `isUserModerator` field'ı `true` yapılırsa kullanıcıya moderatör yetkisi veriliyor. (Uygulama ilerletilirse basit bir admin paneliyle bu işlemler daha kolay hale gelebilir.)
 * TopBar'daki kategori etiketleri oluşturulurken, listedeki mevcut postların kategorileri kullanılıyor.
 * Uygulamayı 3 kullanıcıdan az kullanıcı kullanıyorsa liderlik tablosunda bazı hatalar oluşabilir. En iyi deneyim için mevcut firebase ile kullanımı öneriyoruz. 
+* Moderatör hesaplarının profil sayfası diğer kullanıcılardan farklı şekilde görüntüleniyor ve puan tablosunda yer almıyorlar.
 
 ## Firestore Yapısı:
 
